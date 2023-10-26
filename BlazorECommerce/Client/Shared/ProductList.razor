@@ -1,0 +1,71 @@
+﻿@page "/products"
+@using System.Net.Http
+@using System.Text.Json
+@using System.Text;
+
+@inject HttpClient Http
+
+<ul class="list-unstyled">
+    @foreach (var product in Products)
+    {
+        <li class="media d-flex my-3">
+            <div class="media-img-wrapper mr-2">
+                <a href="#">
+                    <img class="media-img" src="@product.ImageUrl" alt="@product.Title" />
+                </a>
+            </div>
+            <div class="media-body">
+                <a href="#">
+                    <h4 class="mb-0">@product.Title</h4>
+                </a>
+                <p>@product.Description</p>
+                <h5 class="price">
+                    $@product.Price
+                </h5>
+            </div>
+        </li>
+    }
+</ul>
+
+<div>
+    <h3>Excel to JSON Conversion Result:</h3>
+    <p>@resultMessage</p>
+</div>
+
+@code {
+    private List<Product> Products = new List<Product>();
+    private string resultMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var productResult = await Http.GetFromJsonAsync<List<Product>>("api/product");
+        if (productResult != null)
+        {
+            Products = productResult;
+        }
+
+        try
+        {
+            var excelResult = await Http.GetFromJsonAsync<JsonElement[]>("api/product/getExcel");
+            if (excelResult != null)
+            {
+                var stringBuilder = new StringBuilder();
+
+                foreach (var element in excelResult)
+                {
+                    stringBuilder.AppendLine(element.ToString());
+                }
+
+                resultMessage = stringBuilder.ToString();
+            }
+            else
+            {
+                resultMessage = "Excel to JSON conversion result is empty.";
+            }
+        }
+        catch (HttpRequestException)
+        {
+            resultMessage = "An error occurred while retrieving Excel to JSON data.";
+        }
+    }
+}
