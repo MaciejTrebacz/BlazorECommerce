@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OfficeOpenXml;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace BlazorECommerce.Server.Controllers
 {
@@ -12,15 +8,17 @@ namespace BlazorECommerce.Server.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private static List<Product> Products = new List<Product>
+        private readonly DataContext _dataContext;
+
+        public ProductController(DataContext dataContext)
         {
-            // Your product data here
-        };
+            _dataContext = dataContext;
+        }
 
         [HttpGet]
-        public async Task<IActionResult> GetProduct()
+        public async Task<ActionResult<List<Product>>> GetProduct()
         {
-            return Ok(Products);
+            return Ok(await _dataContext.Products.ToListAsync());
         }
 
         [HttpGet]
