@@ -8,17 +8,24 @@ namespace BlazorECommerce.Server.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly DataContext _dataContext;
+        private readonly IProductService _productService;
 
-        public ProductController(DataContext dataContext)
+        public ProductController(IProductService productService)
         {
-            _dataContext = dataContext;
+            _productService = productService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProduct()
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProduct()
         {
-            return Ok(await _dataContext.Products.ToListAsync());
+            return Ok(await _productService.GetProductsAsync());
+        }
+
+        [HttpGet("{id}")]
+        //[Route("{id}")]
+        public async Task<ActionResult<ServiceResponse<Product>>> GetProductByIdAsync(int id)
+        {
+            return Ok(await _productService.GetProductById(id));
         }
 
         [HttpGet]
@@ -40,7 +47,7 @@ namespace BlazorECommerce.Server.Controllers
             if (excelData is null) return BadRequest("Excel file not generated correctly");
 
             var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            var fileName = "example.xlsx"; 
+            var fileName = "example.xlsx";
 
             return File(excelData, contentType, fileName);
         }

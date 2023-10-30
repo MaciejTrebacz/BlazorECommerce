@@ -3,6 +3,7 @@ using BlazorECommerce.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorECommerce.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231030213204_Categories")]
+    partial class Categories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,18 +62,6 @@ namespace BlazorECommerce.Server.Migrations
                             Id = 3,
                             Name = "Curry",
                             Url = "Curry"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Desserts",
-                            Url = "Desserts"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Beverages",
-                            Url = "Beverages"
                         });
                 });
 
@@ -133,42 +124,6 @@ namespace BlazorECommerce.Server.Migrations
                             ImageUrl = "https://www.recipetineats.com/wp-content/uploads/2019/02/Thai-Green-Curry_5.jpg",
                             Price = 500m,
                             Title = "GreenCurry"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CategoryId = 4,
-                            Description = "Mango sticky rice is a traditional Thai dessert made with glutinous rice, fresh mango and coconut milk, and eaten with a spoon or sometimes the hands.",
-                            ImageUrl = "https://elavegan.com/wp-content/uploads/2020/07/drizzling-coconut-sauce-over-mango-sticky-rice.jpg",
-                            Price = 120m,
-                            Title = "Mango Sticky Rice"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CategoryId = 5,
-                            Description = "Thai iced tea is a Thai drink made from tea, milk and sugar, and served cold. It is popular in Southeast Asia and is served in many restaurants that serve Thai food.",
-                            ImageUrl = "https://hot-thai-kitchen.com/wp-content/uploads/2022/08/Thai-iced-tea.jpg",
-                            Price = 50m,
-                            Title = "Thai Iced Tea"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CategoryId = 1,
-                            Description = "Tom yum or tom yam is a type of hot and sour Thai soup, usually cooked with shrimp (prawn). Tom yum has its origin in Thailand.",
-                            ImageUrl = "https://www.recipetineats.com/wp-content/uploads/2019/09/Tom-Yum-soup_2.jpg",
-                            Price = 250m,
-                            Title = "Tom Yum Soup"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CategoryId = 2,
-                            Description = "Pad Thai is a stir-fried rice noodle dish commonly served as a street food and at most restaurants in Thailand as part of the country's cuisine.",
-                            ImageUrl = "https://www.recipetineats.com/wp-content/uploads/2018/05/Chicken-Pad-Thai_9.jpg",
-                            Price = 150m,
-                            Title = "Pad Thai"
                         });
                 });
 
