@@ -28,6 +28,24 @@ namespace BlazorECommerce.Server.Controllers
             return Ok(await _productService.GetProductById(id));
         }
 
+        [HttpGet("category/{categoryUrl}")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductsByCategory(string categoryUrl)
+        {
+            return Ok(await _productService.GetProductsByCategory(categoryUrl));
+        }
+
+        [HttpGet("search/{searchFilter}")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetSearchProducts(string searchFilter)
+        {
+            return Ok(await _productService.SearchProducts(searchFilter));
+        }
+
+        [HttpGet("searchSuggestions/{searchFilter}")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetSearchSuggestions(string searchFilter)
+        {
+            return Ok(await _productService.SuggestProduct(searchFilter));
+        }
+
         [HttpGet]
         [Route("getExcel")]
         public async Task<IActionResult> GetExcel()

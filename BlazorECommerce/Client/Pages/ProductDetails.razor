@@ -13,11 +13,31 @@ else
             <img class="media-img" src="@product.ImageUrl" alt="@product.Title"  />
         </div>
         <div class="media-body">
-            <h2 class="mb-0">@product.Title</h2>
+            <h2 class="mb-0 media-xxx">@product.Title</h2>
             <p>@product.Description</p>
-            <h4 class="price">
-                $@product.Price
-            </h4>
+            @if(product.Variants?.Count > 1)
+            {
+                <div class="mb-3">
+                <select class="form-select" @bind="currentTypeId">
+                    @foreach (var variant in product.Variants)
+                    {
+                        <option value="@variant.ProductTypeId">@variant.ProductType.Name</option>
+                    }
+                </select>
+                </div>
+            }
+            @if(GetSelectedProductVariant() is not null)
+            {
+                @if (GetSelectedProductVariant().OrginalPrice> GetSelectedProductVariant().Price)
+                {
+                    <h6 class="text-muted original-price">
+                        $@GetSelectedProductVariant().OrginalPrice
+                    </h6>
+                }
+                <h4 class="price">
+                    $@GetSelectedProductVariant().Price
+                </h4>
+            }
         </div>
     </div>
 }
@@ -26,6 +46,7 @@ else
 @code {
     private Product? product = null;
     private string message = string.Empty;
+    private int currentTypeId = 1;
 
     [Parameter]
     public int Id { get; set; }
@@ -36,6 +57,11 @@ else
         var result = await ProductService.GetProductById(Id);
         if (!result.Success) message = result.Message;
         else product = result.Data;
+        if (product?.Variants.Count > 0) currentTypeId = product.Variants[0].ProductTypeId;
+    }
 
+    private ProductVariant GetSelectedProductVariant()
+    {
+        return product.Variants.FirstOrDefault(x => x.ProductTypeId == currentTypeId);
     }
 }
